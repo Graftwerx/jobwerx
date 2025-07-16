@@ -1,6 +1,10 @@
 import type { Config } from 'tailwindcss'
+import { withUt } from "uploadthing/tw";
 
-export default {
+
+
+
+export default withUt( {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './pages/**/*.{js,ts,jsx,tsx}', // optional, in case you use pages directory too
@@ -24,4 +28,4 @@ export default {
   },
   plugins: [],
   darkMode: 'class', // or 'media'
-}satisfies Config;
+})satisfies Config;
