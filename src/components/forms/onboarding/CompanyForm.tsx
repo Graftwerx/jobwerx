@@ -1,6 +1,8 @@
+import { createCompany } from "@/app/utils/actions";
 import { countryList } from "@/app/utils/countriesList";
 import { companySchema } from "@/app/utils/zodSchema";
 import { UploadDropzone } from "@/components/general/UploadThingReexported";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -21,6 +23,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { XIcon } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -36,9 +41,25 @@ export function CompanyForm() {
       xAccount: "",
     },
   });
+
+  const [pending, setPending] = useState(false);
+
+  async function onSubmit(data: z.infer<typeof companySchema>) {
+    try {
+      setPending(true);
+      await createCompany(data);
+    } catch (error) {
+      if (error instanceof Error && error.message !== "NEXT_REDIRECT") {
+        console.log("Something went wrong");
+      }
+    } finally {
+      setPending(false);
+    }
+  }
+
   return (
     <Form {...form}>
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -142,22 +163,48 @@ export function CompanyForm() {
             <FormItem>
               <FormLabel>Company Logo</FormLabel>
               <FormControl>
-                <UploadDropzone
-                  endpoint="imageUploader"
-                  onClientUploadComplete={(res) => {
-                    field.onChange(res[0].ufsUrl);
-                  }}
-                  onUploadError={() => {
-                    console.log("Ooops! something went wrong");
-                  }}
-                  className="ut-button:bg-primary ut-button:text-white 
+                <div>
+                  {field.value ? (
+                    <div className="relative w-fit">
+                      <Image
+                        src={field.value}
+                        alt="Company logo"
+                        width={100}
+                        height={100}
+                        className="rounded-lg"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size={"icon"}
+                        className="absolute -top-2 -right-2"
+                        onClick={() => field.onChange("")}
+                      >
+                        <XIcon className="size-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <UploadDropzone
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res) => {
+                        field.onChange(res[0].ufsUrl);
+                      }}
+                      onUploadError={() => {
+                        console.log("Ooops! something went wrong");
+                      }}
+                      className="ut-button:bg-primary ut-button:text-white 
                   ut-button:hover:bg-primary/90 ut-label:text-muted-foreground border-primary"
-                />
+                    />
+                  )}
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <Button type="submit" className="w-full" disabled={pending}>
+          {pending ? "Submitting..." : "Submit"}
+        </Button>
       </form>
     </Form>
   );
