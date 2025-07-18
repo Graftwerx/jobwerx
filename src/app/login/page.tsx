@@ -9,7 +9,7 @@ export default function Login() {
         <Link href="/" className="flex items-center gap-2 self-center">
           <Image src="/emblem.png" alt="Logo" width={40} height={40} />
           <h1 className="text-2xl font-bold">
-            <span className="text-primary">Job</span>Werx
+            <span className="text-primary">Job</span>Hunters
           </h1>
         </Link>
         <LoginForm />
