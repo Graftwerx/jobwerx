@@ -47,7 +47,8 @@ export function MenuBar({ editor }: iAppProps) {
                   editor.chain().focus().toggleBold().run()
                 }
                 className={cn(
-                  editor.isActive("bold") && "bg-muted text-muted-foreground"
+                  editor.isActive("bold") &&
+                    "border-primary bg-muted text-muted-foreground"
                 )}
               >
                 <Bold />

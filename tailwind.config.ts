@@ -26,6 +26,11 @@ export default withUt( {
       },
     },
   },
-  plugins: [],
+  plugins: [
+  
+   
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require('@tailwindcss/typography'),
+  ],
   darkMode: 'class', // or 'media'
 })satisfies Config;

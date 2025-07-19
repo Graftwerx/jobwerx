@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useForm } from "react-hook-form";
 import {
@@ -156,7 +157,7 @@ export function CreateJobForm() {
                 <FormItem>
                   <FormLabel>Job Description</FormLabel>
                   <FormControl>
-                    <JobDescriptionEditor />
+                    <JobDescriptionEditor field={field as any} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
