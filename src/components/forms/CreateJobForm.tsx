@@ -25,7 +25,7 @@ import {
   SelectGroup,
   SelectLabel,
   SelectItem,
-} from "@radix-ui/react-select";
+} from "../ui/select";
 import { countryList } from "@/app/utils/countriesList";
 import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../richTextEditor/jobDescriptionEditor";
@@ -99,7 +99,7 @@ export function CreateJobForm({
           <CardHeader>
             <CardTitle>Job Details</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -126,10 +126,13 @@ export function CreateJobForm({
                     >
                       <FormControl>
                         <SelectTrigger className="text-muted-foreground border-2 rounded-lg">
-                          <SelectValue placeholder="Select employment type" />
+                          <SelectValue
+                            className="w-full"
+                            placeholder="Select employment type"
+                          />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="mt-18">
+                      <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Employment Type</SelectLabel>
                           <SelectItem value="full-time">Full Time</SelectItem>
