@@ -153,7 +153,7 @@ export async function createJobSeeker(data: z.infer<typeof jobSeekerSchema>){
        if(!pricingTier){
         throw new Error("Invalid Listing Duration selected")
        }
-
+ // Trigger the job expiration function
        await inngest.send({
         name:"job/created",
         data:{

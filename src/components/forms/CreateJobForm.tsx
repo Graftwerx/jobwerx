@@ -50,7 +50,7 @@ interface iAppProps {
 export function CreateJobForm({
   companyAbout,
   companyLocation,
-  // companyLogo,
+  companyLogo,
   companyName,
   companyWebsite,
   companyXAccount,
@@ -62,6 +62,7 @@ export function CreateJobForm({
       companyAbout: companyAbout,
       companyLocation: companyLocation,
       companyName: companyName,
+      companyLogo: companyLogo,
       companyWebsite: companyWebsite,
       companyXAccount: companyXAccount || "",
       employmentType: "",
