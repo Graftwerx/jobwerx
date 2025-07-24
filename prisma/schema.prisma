@@ -130,3 +130,17 @@ enum JobPostStatus {
   ACTIVE
   EXPIRED
 }
+
+model City {
+  id         BigInt  @id
+  city       String
+  city_ascii String?
+  lat        Float
+  lng        Float
+  country    String
+  iso2       String?
+  iso3       String?
+  admin_name String?
+  capital    String?
+  population Float?
+}

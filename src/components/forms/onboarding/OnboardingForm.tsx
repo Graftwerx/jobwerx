@@ -32,7 +32,7 @@ export function OnboardingForm() {
   return (
     <>
       <div className="flex items-center gap-4 mb-10">
-        <Image src="/emblem.png" alt="Logo" width={40} height={40} />
+        <Image src="/emblemJH.png" alt="Logo" width={40} height={40} />
         <h1 className="text-4xl font-bold">
           <span className="text-primary">Job</span>Hunters
         </h1>

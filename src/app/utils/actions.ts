@@ -190,3 +190,34 @@ export async function createJobSeeker(data: z.infer<typeof jobSeekerSchema>){
        })
        return redirect(session.url as string)
  }
+
+
+export async function autocompleteCities(query: string) {
+  if (!query || query.length < 2) return [];
+
+  const results = await prisma.city.findMany({
+    where: {
+      city_ascii: {
+        contains: query,
+        mode: 'insensitive',
+      },
+    },
+    select: {
+      city: true,
+      country: true,
+      iso2: true,
+    },
+    orderBy: {
+      population: 'desc',
+    },
+    take: 15,
+  });
+
+  // Format for frontend display
+  return results.map(({ city, country, iso2 }) => ({
+    label: `${city}, ${iso2 || country}`,
+    city,
+    country,
+    iso2,
+  }));
+}

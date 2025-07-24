@@ -1,6 +1,9 @@
 import { prisma } from "@/app/utils/db";
+import { benefits } from "@/app/utils/listOfBenefits";
+import { JsonToHtml } from "@/components/general/JsonToHtml";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -63,7 +66,35 @@ export default async function JobIdPage({ params }: { params: Params }) {
           </Button>
         </div>
         <section>
-          <p> where we describe the job...</p>
+          <JsonToHtml json={JSON.parse(data.jobDescription)} />
+        </section>
+        <section>
+          <h3 className="font-semibold mb-4">
+            Benefits{" "}
+            <span className="text-sm text-muted-foreground font-normal">
+              (highlighted benefits only)
+            </span>
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {benefits.map((benefit) => {
+              const isOffered = data.benefits.includes(benefit.id);
+              return (
+                <Badge
+                  className={cn(
+                    isOffered ? "" : "opacity-75 cursor-not-allowed ",
+                    "text-sm px-4 py-1.5 rounded-full"
+                  )}
+                  key={benefit.id}
+                  variant={isOffered ? "default" : "outline"}
+                >
+                  <span className="flex items-center gap-2">
+                    {benefit.icon}
+                    {benefit.label}
+                  </span>
+                </Badge>
+              );
+            })}
+          </div>
         </section>
       </div>
     </div>

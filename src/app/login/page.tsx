@@ -7,7 +7,7 @@ export default function Login() {
     <div className="min-h-screen w-screen flex items-center justify-center">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <Link href="/" className="flex items-center gap-2 self-center">
-          <Image src="/emblem.png" alt="Logo" width={40} height={40} />
+          <Image src="/emblemJH.png" alt="Logo" width={40} height={40} />
           <h1 className="text-2xl font-bold">
             <span className="text-primary">Job</span>Hunters
           </h1>
