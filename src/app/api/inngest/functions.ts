@@ -75,7 +75,7 @@ export const sendPeriodicJobListings = inngest.createFunction(
             #eee; border-radius: 5px;">
             <h3 style="margin: 0;">${job.jobTitle}</h3>
             <p style="margin: 5px 0;">${job.Company.name} * ${job.location}</p>
-            <p style="margin: 5px 0;">$${job.salaryFrom.toLocaleString} -  $${job.salaryTo.toLocaleString}</p>
+            <p style="margin: 5px 0;">$${job.salaryFrom.toLocaleString()} - $${job.salaryTo.toLocaleString()}</p>
             </div> `
           ).join("");
 
