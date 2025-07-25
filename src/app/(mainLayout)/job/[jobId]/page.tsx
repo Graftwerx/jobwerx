@@ -1,52 +1,79 @@
-import arcjet, { detectBot } from "@/app/utils/arcjet";
+import { saveJobPost, unSaveJobPost } from "@/app/utils/actions";
+import arcjet, { detectBot, fixedWindow } from "@/app/utils/arcjet";
+import { auth } from "@/app/utils/auth";
 import { prisma } from "@/app/utils/db";
 import { benefits } from "@/app/utils/listOfBenefits";
 import { JsonToHtml } from "@/components/general/JsonToHtml";
+import { SaveJobButton } from "@/components/general/SubmitButton";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { request } from "@arcjet/next";
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
-const aj = arcjet.withRule(
-  detectBot({
-    mode: "LIVE",
-    allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
-  })
-);
+const aj = arcjet
+  .withRule(
+    detectBot({
+      mode: "DRY_RUN",
+      allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
+    })
+  )
+  .withRule(
+    fixedWindow({
+      mode: "DRY_RUN",
+      max: 16,
+      window: "60s",
+    })
+  );
 
-async function getJob(jobId: string) {
-  const jobData = await prisma.jobPost.findUnique({
-    where: {
-      status: "ACTIVE",
-      id: jobId,
-    },
-    select: {
-      jobTitle: true,
-      jobDescription: true,
-      location: true,
-      employmentType: true,
-      benefits: true,
-      createdAt: true,
-      listingDuration: true,
-      Company: {
-        select: {
-          name: true,
-          logo: true,
-          location: true,
-          about: true,
+async function getJob(jobId: string, userId?: string) {
+  const [jobData, savedJob] = await Promise.all([
+    await prisma.jobPost.findUnique({
+      where: {
+        status: "ACTIVE",
+        id: jobId,
+      },
+      select: {
+        jobTitle: true,
+        jobDescription: true,
+        location: true,
+        employmentType: true,
+        benefits: true,
+        createdAt: true,
+        listingDuration: true,
+        Company: {
+          select: {
+            name: true,
+            logo: true,
+            location: true,
+            about: true,
+          },
         },
       },
-    },
-  });
+    }),
+    userId
+      ? prisma.savedJobPost.findUnique({
+          where: {
+            userId_jobPostId: {
+              userId: userId,
+              jobPostId: jobId,
+            },
+          },
+          select: {
+            id: true,
+          },
+        })
+      : null,
+  ]);
 
   if (!jobData) {
     return notFound();
   }
-  return jobData;
+  return { jobData, savedJob };
 }
 
 type Params = Promise<{ jobId: string }>;
@@ -59,7 +86,8 @@ export default async function JobIdPage({ params }: { params: Params }) {
   if (decision.isDenied()) {
     throw new Error("Forbidden");
   }
-  const data = await getJob(jobId);
+  const session = await auth();
+  const { jobData: data, savedJob } = await getJob(jobId, session?.user?.id);
 
   return (
     <div className="grid grid-cols-3 gap-8">
@@ -78,10 +106,26 @@ export default async function JobIdPage({ params }: { params: Params }) {
               <Badge className="rounded-full">{data.location}</Badge>
             </div>
           </div>
-          <Button variant={"outline"}>
-            <Heart className="size-4" />
-            Save job
-          </Button>
+          {/* */}
+          {session?.user ? (
+            <form
+              action={
+                savedJob
+                  ? unSaveJobPost.bind(null, savedJob.id)
+                  : saveJobPost.bind(null, jobId)
+              }
+            >
+              <SaveJobButton savedJob={!!savedJob} />
+            </form>
+          ) : (
+            <Link
+              href="/login"
+              className={buttonVariants({ variant: "outline" })}
+            >
+              <Heart className="size-4" />
+              Save job
+            </Link>
+          )}
         </div>
         <section>
           <JsonToHtml json={JSON.parse(data.jobDescription)} />
