@@ -8,7 +8,7 @@ export const { GET, POST, PUT } = serve({
   functions: [
     helloWorld,
     handleJobExpiry,
-    sendPeriodicJobListings,
+  sendPeriodicJobListings,
     /* your functions will be passed here later! */
   ],
 });
