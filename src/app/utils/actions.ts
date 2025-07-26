@@ -262,6 +262,31 @@ export async function createJobSeeker(data: z.infer<typeof jobSeekerSchema>){
       return redirect("/my-jobs")
  }
 
+ export async function deleteJobPost(jobId:string){
+    const session = await requireUser()
+
+    const req = await request()
+
+    const decision = await aj.protect(req)
+    if(decision.isDenied()){
+      throw new Error("Forbidden")
+    }
+
+    await prisma.jobPost.delete({
+        where:{
+          id:jobId,
+          Company:{
+            userId: session.id
+          }
+        }
+    })
+    // await inngest.send({
+    //     name:"job/delete.expiration",
+    //     data:{jobId:jobId}
+    // })
+    return redirect("/my-jobs")
+ }
+
 
 export async function autocompleteCities(query: string) {
   if (!query || query.length < 2) return [];
