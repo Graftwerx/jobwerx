@@ -1,5 +1,6 @@
 import { prisma } from "@/app/utils/db";
 import { requireUser } from "@/app/utils/requireUser";
+import { CopyLinkMenuItem } from "@/components/general/CopyLink";
 import { EmptyState } from "@/components/general/EmptyState";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,12 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  CopyCheckIcon,
-  MoreHorizontal,
-  PenBoxIcon,
-  XCircleIcon,
-} from "lucide-react";
+import { MoreHorizontal, PenBoxIcon, XCircleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -130,11 +126,9 @@ export default async function MyJobsPage() {
                               <PenBoxIcon /> Edit
                             </Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
-                            <Link href={`/my-jobs/${listing.id}/copy`}>
-                              <CopyCheckIcon /> Copy url
-                            </Link>
-                          </DropdownMenuItem>
+                          <CopyLinkMenuItem
+                            jobUrl={`${process.env.NEXT_PUBLIC_URL}/job/${listing.id}`}
+                          />
                           <DropdownMenuSeparator />
                           <DropdownMenuItem asChild>
                             <Link href={`/my-jobs/${listing.id}/delete`}>
