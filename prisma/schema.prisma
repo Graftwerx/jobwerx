@@ -136,18 +136,17 @@ enum JobPostStatus {
 }
 
 model SavedJobPost {
-  id String @id @default(uuid())
-
-  JobPost   JobPost[]
-  jobPostId String
-
-  User   User[]
+  id     String @id @default(uuid())
+  jobId  String
   userId String
+
+  job  JobPost @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, jobPostId])
+  @@unique([userId, jobId])
 }
 
 model City {

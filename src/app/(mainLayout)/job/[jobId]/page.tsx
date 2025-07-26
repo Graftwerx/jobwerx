@@ -58,9 +58,9 @@ async function getJob(jobId: string, userId?: string) {
     userId
       ? prisma.savedJobPost.findUnique({
           where: {
-            userId_jobPostId: {
+            userId_jobId: {
               userId: userId,
-              jobPostId: jobId,
+              jobId: jobId,
             },
           },
           select: {
