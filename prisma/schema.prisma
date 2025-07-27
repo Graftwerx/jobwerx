@@ -49,6 +49,8 @@ model Company {
   website  String
   xAccount String?
   JobPost  JobPost[]
+  cityId   BigInt?
+  city     City?     @relation(fields: [cityId], references: [id])
 
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @unique
@@ -126,6 +128,9 @@ model JobPost {
   Company   Company @relation(fields: [companyId], references: [id])
   companyId String
 
+  cityId BigInt?
+  city   City?   @relation(fields: [cityId], references: [id])
+
   SavedJobPost SavedJobPost[]
 }
 
@@ -161,4 +166,8 @@ model City {
   admin_name String?
   capital    String?
   population Float?
+
+  JobPost JobPost[]
+
+  Company Company[]
 }

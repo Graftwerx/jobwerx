@@ -45,7 +45,7 @@ export async function createCompany(data: z.infer<typeof companySchema>){
             userType:"COMPANY",
             Company:{
                 create:{
-                    ...validateData
+                    ...validateData,
                 }
             }
         }
@@ -280,10 +280,10 @@ export async function createJobSeeker(data: z.infer<typeof jobSeekerSchema>){
           }
         }
     })
-    // await inngest.send({
-    //     name:"job/delete.expiration",
-    //     data:{jobId:jobId}
-    // })
+    await inngest.send({
+        name:"job/delete.expiration",
+        data:{jobId:jobId}
+    })
     return redirect("/my-jobs")
  }
 
