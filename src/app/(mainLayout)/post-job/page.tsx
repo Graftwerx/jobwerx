@@ -59,6 +59,7 @@ async function getCompany(userId: string) {
       logo: true,
       xAccount: true,
       website: true,
+      city: true,
     },
   });
   if (!data) {
@@ -75,6 +76,7 @@ export default async function PostJobPage() {
       <CreateJobForm
         companyAbout={data.about}
         companyLocation={data.location}
+        companyCityId={data.city?.id?.toString() ?? ""}
         companyLogo={data.logo}
         companyName={data.name}
         companyWebsite={data.website}

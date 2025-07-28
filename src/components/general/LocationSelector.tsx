@@ -7,6 +7,7 @@ type CityResult = {
   city: string;
   country: string;
   iso2: string;
+  id: string;
 };
 
 export default function LocationSelector({
@@ -47,7 +48,7 @@ export default function LocationSelector({
         <div className="absolute top-full mt-1 text-sm">Loading...</div>
       )}
       {results.length > 0 && (
-        <ul className="absolute z-10 bg-white border rounded w-full mt-1 max-h-60 overflow-auto shadow">
+        <ul className="absolute z-10 border rounded w-full mt-1 max-h-60 overflow-auto shadow">
           {results.map((city, idx) => (
             <li
               key={idx}

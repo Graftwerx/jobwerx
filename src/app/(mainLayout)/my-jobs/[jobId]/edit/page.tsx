@@ -31,6 +31,7 @@ async function getData(jobId: string, userId: string) {
           xAccount: true,
         },
       },
+      city: true,
     },
   });
   if (!data) {

@@ -6,6 +6,7 @@ import { Badge } from "../ui/badge";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 import { MapPin } from "lucide-react";
 import { formatRelativeTime } from "@/app/utils/formatRelativeTime";
+import { City } from "@prisma/client";
 
 interface iAppProps {
   job: {
@@ -22,6 +23,7 @@ interface iAppProps {
       location: string;
       logo: string;
     };
+    city?: City | null;
   };
 }
 
@@ -59,6 +61,13 @@ export function JobCard({ job }: iAppProps) {
                 <span className="hidden md:inline text-muted-foreground">
                   *
                 </span>
+                <Badge className="rounded-full" variant={"secondary"}>
+                  {job.city?.city} {job.city?.iso2}
+                </Badge>
+                <span className="hidden md:inline text-muted-foreground">
+                  *
+                </span>
+
                 <p className="text-sm text-muted-foreground">
                   {formatCurrency(job.salaryFrom)} -{" "}
                   {formatCurrency(job.salaryTo)}

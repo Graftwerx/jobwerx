@@ -53,6 +53,7 @@ async function getJob(jobId: string, userId?: string) {
             about: true,
           },
         },
+        city: true,
       },
     }),
     userId

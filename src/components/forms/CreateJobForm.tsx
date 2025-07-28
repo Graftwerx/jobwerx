@@ -37,6 +37,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { JobListingDuration } from "../general/JobListingDurationSelector";
 import { useState } from "react";
+import LocationSelector from "../general/LocationSelector";
 
 interface iAppProps {
   companyLocation: string;
@@ -45,11 +46,13 @@ interface iAppProps {
   companyLogo: string;
   companyWebsite: string;
   companyXAccount: string | null;
+  companyCityId: string | null;
 }
 
 export function CreateJobForm({
   companyAbout,
   companyLocation,
+  companyCityId,
   companyLogo,
   companyName,
   companyWebsite,
@@ -61,6 +64,7 @@ export function CreateJobForm({
       benefits: [],
       companyAbout: companyAbout,
       companyLocation: companyLocation,
+      companyCityId: companyCityId || "",
       companyName: companyName,
       companyLogo: companyLogo,
       companyWebsite: companyWebsite,
@@ -89,6 +93,7 @@ export function CreateJobForm({
     } finally {
       setPending(false);
     }
+    console.log("Submitted job:", values.cityId);
   }
   return (
     <Form {...form}>
@@ -149,43 +154,65 @@ export function CreateJobForm({
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Job Location</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="h-auto text-muted-foreground border-2 rounded-lg">
-                          <SelectValue placeholder="Select Location" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="mt-2">
-                        <SelectGroup>
-                          <SelectLabel>Worldwide</SelectLabel>
-                          <SelectItem value="world">
-                            <span>Worldwide / Remote</span>
-                          </SelectItem>
-                        </SelectGroup>
-                        <SelectGroup>
-                          <SelectLabel>Location</SelectLabel>
-                          {countryList.map((country) => (
-                            <SelectItem key={country.code} value={country.name}>
-                              <span>{country.flagEmoji}</span>
-                              <span className="pl-2">{country.name}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Job Location</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-auto text-muted-foreground border-2 rounded-lg">
+                            <SelectValue placeholder="Select Location" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="mt-2">
+                          <SelectGroup>
+                            <SelectLabel>Worldwide</SelectLabel>
+                            <SelectItem value="world">
+                              <span>Worldwide / Remote</span>
                             </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Location</SelectLabel>
+                            {countryList.map((country) => (
+                              <SelectItem
+                                key={country.code}
+                                value={country.name}
+                              >
+                                <span>{country.flagEmoji}</span>
+                                <span className="pl-2">{country.name}</span>
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cityId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl>
+                        <LocationSelector
+                          onSelect={(city) =>
+                            field.onChange(city.id.toString())
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormItem>
                 <FormLabel>Salary Range</FormLabel>
                 <FormControl>
@@ -246,43 +273,65 @@ export function CreateJobForm({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="companyLocation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Company location</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="h-auto text-muted-foreground border-2 rounded-lg">
-                          <SelectValue placeholder="Select Location" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="mt-12">
-                        <SelectGroup>
-                          <SelectLabel>Worldwide</SelectLabel>
-                          <SelectItem value="world">
-                            <span>Worldwide / Remote</span>
-                          </SelectItem>
-                        </SelectGroup>
-                        <SelectGroup>
-                          <SelectLabel>Location</SelectLabel>
-                          {countryList.map((country) => (
-                            <SelectItem key={country.code} value={country.name}>
-                              <span>{country.flagEmoji}</span>
-                              <span className="pl-2">{country.name}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <FormField
+                  control={form.control}
+                  name="companyLocation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Job Location</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-auto text-muted-foreground border-2 rounded-lg">
+                            <SelectValue placeholder="Select Location" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="mt-2">
+                          <SelectGroup>
+                            <SelectLabel>Worldwide</SelectLabel>
+                            <SelectItem value="world">
+                              <span>Worldwide / Remote</span>
                             </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Location</SelectLabel>
+                            {countryList.map((country) => (
+                              <SelectItem
+                                key={country.code}
+                                value={country.name}
+                              >
+                                <span>{country.flagEmoji}</span>
+                                <span className="pl-2">{country.name}</span>
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="companyCityId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl>
+                        <LocationSelector
+                          onSelect={(city) =>
+                            field.onChange(city.id.toString())
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
               <FormField

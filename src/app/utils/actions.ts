@@ -45,7 +45,10 @@ export async function createCompany(data: z.infer<typeof companySchema>){
             userType:"COMPANY",
             Company:{
                 create:{
+                    
                     ...validateData,
+                     cityId: validateData.cityId ? BigInt(validateData.cityId) : undefined,
+                    
                 }
             }
         }
@@ -135,6 +138,7 @@ export async function createJobSeeker(data: z.infer<typeof jobSeekerSchema>){
             jobTitle:validateData.jobTitle,
             employmentType:validateData.employmentType,
             location:validateData.location,
+            ...(validateData.cityId && { cityId: BigInt(validateData.cityId) }),
             salaryFrom: validateData.salaryFrom,
             salaryTo:validateData.salaryTo,
             listingDuration:validateData.listingDuration,

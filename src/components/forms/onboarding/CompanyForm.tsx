@@ -1,6 +1,7 @@
 import { createCompany } from "@/app/utils/actions";
 import { countryList } from "@/app/utils/countriesList";
 import { companySchema } from "@/app/utils/zodSchema";
+import LocationSelector from "@/components/general/LocationSelector";
 import { UploadDropzone } from "@/components/general/UploadThingReexported";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +37,7 @@ export function CompanyForm() {
       about: "",
       location: "",
       logo: "",
+      cityId: "",
       name: "",
       website: "",
       xAccount: "",
@@ -74,43 +76,60 @@ export function CompanyForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company Location</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Location" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Worldwide</SelectLabel>
-                      <SelectItem value="world">
-                        <span>Worldwide / Remote</span>
-                      </SelectItem>
-                    </SelectGroup>
-                    <SelectGroup>
-                      <SelectLabel>Location</SelectLabel>
-                      {countryList.map((country) => (
-                        <SelectItem key={country.code} value={country.name}>
-                          <span>{country.flagEmoji}</span>
-                          <span className="pl-2">{country.name}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Location</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="h-auto text-muted-foreground border-2 rounded-lg">
+                        <SelectValue placeholder="Select Location" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="mt-2">
+                      <SelectGroup>
+                        <SelectLabel>Worldwide</SelectLabel>
+                        <SelectItem value="world">
+                          <span>Worldwide / Remote</span>
                         </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                      </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel>Location</SelectLabel>
+                        {countryList.map((country) => (
+                          <SelectItem key={country.code} value={country.name}>
+                            <span>{country.flagEmoji}</span>
+                            <span className="pl-2">{country.name}</span>
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="cityId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <LocationSelector
+                      onSelect={(city) => field.onChange(city.id.toString())}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField

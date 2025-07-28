@@ -28,6 +28,7 @@ async function getFavorites(userId: string) {
               about: true,
             },
           },
+          city: true,
         },
       },
     },

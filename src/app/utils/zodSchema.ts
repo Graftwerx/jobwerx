@@ -7,6 +7,7 @@ export const companySchema = z.object({
     logo:z.string().min(1, "Please upload a logo."),
     website: z.url("Please enter a valid URL"),
     xAccount: z.string().optional(),
+    cityId: z.string().optional(),
     
     
 
@@ -22,7 +23,8 @@ export const jobSchema = z.object({
     jobTitle: z.string().min(2,"Job title needs to be at least 2 characters"),
     employmentType: z.string().min(1,"please select employment type"),
     location: z.string().min(1,"please select location"),
-   
+   cityId: z.string().optional(),
+
     salaryFrom: z.number().min(1,"salary from is required"),
      salaryTo: z.number().min(1,"salary to is required"),
      jobDescription: z.string().min(1,"job description is required"),
@@ -34,6 +36,7 @@ export const jobSchema = z.object({
      companyLogo: z.string().min(1,"logo is required"),
      companyWebsite: z.url().min(1,"please enter vaild URL"),
      companyXAccount: z.string().optional(),
+     companyCityId:z.string().optional(),
     
      
 })

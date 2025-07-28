@@ -48,6 +48,7 @@ async function getJobs(userId: string) {
           logo: true,
         },
       },
+      city: true,
     },
     orderBy: {
       createdAt: "desc",
