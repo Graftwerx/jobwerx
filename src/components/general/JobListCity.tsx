@@ -2,20 +2,23 @@ import { prisma } from "@/app/utils/db";
 import { EmptyState } from "./EmptyState";
 import { JobCard } from "./JobCard";
 import { MainPagination } from "./MainPagination";
-import { JobPostStatus } from "@prisma/client";
+import { JobPostStatus, Prisma } from "@prisma/client";
 
 async function getData({
   page = 1,
   pageSize = 3,
   jobTypes = [],
   location = "",
+  city = "",
 }: {
   page: number;
   pageSize: number;
   jobTypes: string[];
   location: string;
+  city: string;
 }) {
   const skip = (page - 1) * pageSize;
+
   const where = {
     status: JobPostStatus.ACTIVE,
     ...(jobTypes.length > 0 && {
@@ -27,6 +30,9 @@ async function getData({
       location !== "worldwide" && {
         location: location,
       }),
+    ...(city && {
+      cityId: BigInt(city),
+    }),
   };
 
   const [data, totalCount] = await Promise.all([
@@ -34,7 +40,6 @@ async function getData({
       where: where,
       take: pageSize,
       skip: skip,
-
       select: {
         jobTitle: true,
         id: true,
@@ -42,7 +47,6 @@ async function getData({
         salaryTo: true,
         employmentType: true,
         location: true,
-
         createdAt: true,
         Company: {
           select: {
@@ -60,7 +64,26 @@ async function getData({
     }),
     prisma.jobPost.count({
       where: {
-        status: "ACTIVE",
+        status: JobPostStatus.ACTIVE,
+        ...(location &&
+          location !== "worldwide" && {
+            location: location,
+          }),
+        ...(jobTypes.length > 0 && {
+          employmentType: {
+            in: jobTypes,
+          },
+        }),
+        ...(city && {
+          city: {
+            is: {
+              OR: [
+                { city: { contains: city, mode: "insensitive" } },
+                { country: { contains: city, mode: "insensitive" } },
+              ],
+            } satisfies Prisma.CityWhereInput,
+          },
+        }),
       },
     }),
   ]);
@@ -70,20 +93,24 @@ async function getData({
     totalPages: Math.ceil(totalCount / pageSize),
   };
 }
+
 export async function JobListings({
   currentPage,
   jobTypes,
   location,
+  city,
 }: {
   currentPage: number;
   jobTypes: string[];
   location: string;
+  city: string;
 }) {
   const { jobs, totalPages } = await getData({
     page: currentPage,
     pageSize: 3,
     jobTypes: jobTypes,
     location: location,
+    city: city,
   });
 
   return (

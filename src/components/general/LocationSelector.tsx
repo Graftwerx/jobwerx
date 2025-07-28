@@ -14,6 +14,7 @@ export default function LocationSelector({
   onSelect,
 }: {
   onSelect: (city: CityResult) => void;
+  value?: string;
 }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CityResult[]>([]);
@@ -52,7 +53,7 @@ export default function LocationSelector({
           {results.map((city, idx) => (
             <li
               key={idx}
-              className="p-2 hover:bg-gray-100 cursor-pointer"
+              className="p-2 hover:bg-gray-800 cursor-pointer"
               onClick={() => {
                 onSelect(city);
                 setQuery(city.label); // fill in the selected label

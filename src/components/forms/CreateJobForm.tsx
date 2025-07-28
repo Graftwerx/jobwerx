@@ -26,7 +26,7 @@ import {
   SelectLabel,
   SelectItem,
 } from "../ui/select";
-import { countryList } from "@/app/utils/countriesList";
+// import { countryList } from "@/app/utils/countriesList";
 import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../richTextEditor/jobDescriptionEditor";
 import { BenefitsSelector } from "../general/BenefitsSelector";
@@ -40,7 +40,7 @@ import { useState } from "react";
 import LocationSelector from "../general/LocationSelector";
 
 interface iAppProps {
-  companyLocation: string;
+  companyLocation: string | null;
   companyName: string;
   companyAbout: string;
   companyLogo: string;
@@ -63,7 +63,7 @@ export function CreateJobForm({
     defaultValues: {
       benefits: [],
       companyAbout: companyAbout,
-      companyLocation: companyLocation,
+      companyLocation: companyLocation || "",
       companyCityId: companyCityId || "",
       companyName: companyName,
       companyLogo: companyLogo,
@@ -155,7 +155,7 @@ export function CreateJobForm({
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="location"
                   render={({ field }) => (
@@ -194,7 +194,7 @@ export function CreateJobForm({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   control={form.control}
                   name="cityId"
@@ -274,7 +274,7 @@ export function CreateJobForm({
                 )}
               />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="companyLocation"
                   render={({ field }) => (
@@ -313,7 +313,7 @@ export function CreateJobForm({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   control={form.control}
                   name="companyCityId"

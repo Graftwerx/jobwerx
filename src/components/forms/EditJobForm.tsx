@@ -41,7 +41,7 @@ interface iAppProps {
   jobPost: {
     jobTitle: string;
     employmentType: string;
-    location: string;
+    location: string | null;
     salaryFrom: number;
     salaryTo: number;
     jobDescription: string;
@@ -49,7 +49,7 @@ interface iAppProps {
     benefits: string[];
     id: string;
     Company: {
-      location: string;
+      location: string | null;
       name: string;
       about: string;
       logo: string;
@@ -65,7 +65,7 @@ export function EditJobForm({ jobPost }: iAppProps) {
     defaultValues: {
       benefits: jobPost.benefits,
       companyAbout: jobPost.Company.about,
-      companyLocation: jobPost.Company.location,
+      companyLocation: jobPost.Company.location || "",
       companyName: jobPost.Company.name,
       companyLogo: jobPost.Company.logo,
       companyWebsite: jobPost.Company.website,
@@ -74,7 +74,7 @@ export function EditJobForm({ jobPost }: iAppProps) {
       jobDescription: jobPost.jobDescription,
       jobTitle: jobPost.jobTitle,
       listingDuration: jobPost.listingDuration,
-      location: jobPost.location,
+      location: jobPost.location || "",
       salaryFrom: jobPost.salaryFrom,
       salaryTo: jobPost.salaryTo,
     },
@@ -155,7 +155,7 @@ export function EditJobForm({ jobPost }: iAppProps) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="location"
                   render={({ field }) => (
@@ -194,7 +194,7 @@ export function EditJobForm({ jobPost }: iAppProps) {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   control={form.control}
                   name="cityId"

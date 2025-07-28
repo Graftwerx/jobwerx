@@ -1,5 +1,5 @@
 import { createCompany } from "@/app/utils/actions";
-import { countryList } from "@/app/utils/countriesList";
+// import { countryList } from "@/app/utils/countriesList";
 import { companySchema } from "@/app/utils/zodSchema";
 import LocationSelector from "@/components/general/LocationSelector";
 import { UploadDropzone } from "@/components/general/UploadThingReexported";
@@ -13,15 +13,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectGroup,
+//   SelectItem,
+//   SelectLabel,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { XIcon } from "lucide-react";
@@ -77,7 +77,7 @@ export function CompanyForm() {
             )}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <FormField
+            {/* <FormField
               control={form.control}
               name="location"
               render={({ field }) => (
@@ -113,7 +113,7 @@ export function CompanyForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="cityId"

@@ -43,7 +43,7 @@ enum UserType {
 model Company {
   id       String    @id @default(uuid())
   name     String
-  location String
+  location String?
   about    String
   logo     String
   website  String
@@ -113,7 +113,7 @@ model JobPost {
   id              String   @id @default(uuid())
   jobTitle        String
   employmentType  String
-  location        String
+  location        String?
   salaryFrom      Int
   salaryTo        Int
   jobDescription  String

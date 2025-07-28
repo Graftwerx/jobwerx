@@ -2,7 +2,7 @@ import z from "zod";
 
 export const companySchema = z.object({
     name: z.string().min(2, "Company name must have at least 2 characters."),
-    location: z.string().min(1, "Location must be defined."),
+    location: z.string().optional(),
     about: z.string().min(10,"Please provide some information about your company."),
     logo:z.string().min(1, "Please upload a logo."),
     website: z.url("Please enter a valid URL"),
@@ -22,7 +22,7 @@ export const jobSeekerSchema = z.object({
 export const jobSchema = z.object({
     jobTitle: z.string().min(2,"Job title needs to be at least 2 characters"),
     employmentType: z.string().min(1,"please select employment type"),
-    location: z.string().min(1,"please select location"),
+    location: z.string().optional(),
    cityId: z.string().optional(),
 
     salaryFrom: z.number().min(1,"salary from is required"),
@@ -31,7 +31,7 @@ export const jobSchema = z.object({
      listingDuration: z.number().min(1, "please specify duration"),
      benefits: z.array(z.string()).min(1,"please specify at least one benefit"),
      companyName: z.string().min(1,"Company name is required"),
-     companyLocation: z.string().min(1, "company location is required"),
+     companyLocation: z.string().optional(),
      companyAbout: z.string().min(12, "description required"),
      companyLogo: z.string().min(1,"logo is required"),
      companyWebsite: z.url().min(1,"please enter vaild URL"),

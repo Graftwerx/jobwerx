@@ -13,14 +13,14 @@ interface iAppProps {
     id: string;
     jobTitle: string;
     employmentType: string;
-    location: string;
+    location: string | null;
     salaryFrom: number;
     salaryTo: number;
     createdAt: Date;
     Company: {
       about: string;
       name: string;
-      location: string;
+      location: string | null;
       logo: string;
     };
     city?: City | null;
@@ -55,9 +55,9 @@ export function JobCard({ job }: iAppProps) {
                 <span className="hidden md:inline text-muted-foreground">
                   *
                 </span>
-                <Badge className="rounded-full" variant={"secondary"}>
+                {/* <Badge className="rounded-full" variant={"secondary"}>
                   {job.location}
-                </Badge>
+                </Badge> */}
                 <span className="hidden md:inline text-muted-foreground">
                   *
                 </span>
@@ -77,7 +77,7 @@ export function JobCard({ job }: iAppProps) {
             <div className="md:ml-auto">
               <div className="flex items-center gap-2 justify-end">
                 <MapPin className="size-4" />
-                <h1>{job.location}</h1>
+                <h1>{job.city?.city}</h1>
               </div>
               <p className="text-sm text-muted-foreground md:text-right">
                 {formatRelativeTime(job.createdAt)}
