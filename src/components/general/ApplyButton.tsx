@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
 
 export default function ApplyButton({ jobId }: { jobId: string }) {
   const [loading, setLoading] = useState(false);
@@ -34,12 +35,12 @@ export default function ApplyButton({ jobId }: { jobId: string }) {
   };
 
   return (
-    <button
+    <Button
       onClick={handleApply}
       disabled={loading}
-      className="w-full py-2 px-4 rounded-md bg-primary text-white font-medium hover:bg-primary/90 disabled:opacity-50"
+      className="w-full py-2 px-4 rounded-md font-medium hover:bg-primary/90 disabled:opacity-50"
     >
       {loading ? "Submitting..." : "Apply Now"}
-    </button>
+    </Button>
   );
 }
