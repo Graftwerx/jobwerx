@@ -3,10 +3,11 @@ import arcjet, { detectBot, fixedWindow } from "@/app/utils/arcjet";
 import { auth } from "@/app/utils/auth";
 import { prisma } from "@/app/utils/db";
 import { benefits } from "@/app/utils/listOfBenefits";
+import ApplyButton from "@/components/general/ApplyButton";
 import { JsonToHtml } from "@/components/general/JsonToHtml";
 import { SaveJobButton } from "@/components/general/SubmitButton";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { request } from "@arcjet/next";
@@ -170,7 +171,7 @@ export default async function JobIdPage({ params }: { params: Params }) {
                 JobHunters. This helps us immensely!
               </p>
             </div>
-            <Button className="w-full">Apply now</Button>
+            <ApplyButton jobId={jobId} />
           </div>
         </Card>
 

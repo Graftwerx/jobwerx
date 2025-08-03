@@ -33,6 +33,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  JobApplication JobApplication[]
 }
 
 enum UserType {
@@ -132,6 +134,8 @@ model JobPost {
   city   City?   @relation(fields: [cityId], references: [id])
 
   SavedJobPost SavedJobPost[]
+
+  JobApplication JobApplication[]
 }
 
 enum JobPostStatus {
@@ -152,6 +156,20 @@ model SavedJobPost {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, jobId])
+}
+
+model JobApplication {
+  id        String   @id @default(cuid())
+  userId    String
+  jobId     String
+  resumeUrl String?
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+
+  User    User    @relation(fields: [userId], references: [id])
+  JobPost JobPost @relation(fields: [jobId], references: [id])
+
+  @@unique([userId, jobId]) // ✅ Composite unique constraint
 }
 
 model City {

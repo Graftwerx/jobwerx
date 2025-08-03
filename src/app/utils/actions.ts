@@ -1,5 +1,5 @@
 "use server"
-
+import { sendEmail } from "@/app/utils/mailer"; // You need to implement this
 import {z} from "zod";
 import { requireUser } from "./requireUser";
 import { companySchema, jobSchema, jobSeekerSchema } from "./zodSchema";
@@ -11,6 +11,7 @@ import { stripe } from "./stripe";
 import { jobListingDurationPricing } from "./jobListingPricing";
 import { inngest } from "./inngest/client";
 import { revalidatePath } from "next/cache";
+import { auth } from "./auth";
 
 const aj = arcjet.withRule(
     shield({
@@ -290,6 +291,70 @@ export async function createJobSeeker(data: z.infer<typeof jobSeekerSchema>){
     })
     return redirect("/my-jobs")
  }
+
+ // utils/actions.ts
+
+export async function applyToJob(jobId: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("You must be logged in to apply.");
+  }
+
+  // Fetch job + company + company owner
+  const job = await prisma.jobPost.findUnique({
+    where: { id: jobId },
+    include: {
+      Company: {
+        include: { user: true }, // 👈 So we can email company owner
+      },
+    },
+  });
+
+  if (!job || !job.Company?.user?.email) {
+    throw new Error("Company owner email not found");
+  }
+
+  // Prevent duplicate applications
+  const existing = await prisma.jobApplication.findFirst({
+    where: { jobId, userId: session.user.id },
+  });
+
+  if (existing) {
+    throw new Error("You have already applied to this job.");
+  }
+
+  // Find jobseeker resume
+  const jobseeker = await prisma.jobseeker.findUnique({
+    where: { userId: session.user.id },
+    select: { resume: true },
+  });
+
+  if (!jobseeker?.resume) {
+    throw new Error("Please upload your resume first.");
+  }
+
+  // Create JobApplication
+  const application = await prisma.jobApplication.create({
+    data: {
+      jobId,
+      userId: session.user.id,
+      resumeUrl: jobseeker.resume,
+    },
+  });
+
+  // Send email to company owner
+  await sendEmail({
+    to: job.Company.user.email,
+    subject: `New applicant for ${job.jobTitle}`,
+    html: `
+      <p>A new candidate has applied for <b>${job.jobTitle}</b>.</p>
+      <p><a href="${application.resumeUrl}">Download Resume</a></p>
+    `,
+  });
+
+  return { success: true };
+}
+
 
 
 export async function autocompleteCities(query: string) {
