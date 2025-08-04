@@ -19,13 +19,13 @@ import { notFound } from "next/navigation";
 const aj = arcjet
   .withRule(
     detectBot({
-      mode: "DRY_RUN",
+      mode: "LIVE",
       allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
     })
   )
   .withRule(
     fixedWindow({
-      mode: "DRY_RUN",
+      mode: "LIVE",
       max: 16,
       window: "60s",
     })
